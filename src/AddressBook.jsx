@@ -8,13 +8,15 @@ const data = [
 ];
 
 class AddressBook extends React.Component {
+	// State can be initialized either in the constructor or as a class property
 	// state = { contactData: null };
 	constructor(props) {
 		super(props);
 		this.state = {
 			contactData: null
 		};
-		this.fetchData = this.fetchData.bind(this);
+		// Use bind if you don't use "arrow function as class property" for event functions
+		// this.fetchData = this.fetchData.bind(this);
 	}
 	fetchData = () => {
 		this.setState({ contactData: data });
@@ -24,23 +26,28 @@ class AddressBook extends React.Component {
 	}
 	render() {
 		let contacts;
+		// Conditional rendering - if-sats eller conditional operator (?)
 		if( this.state.contactData ) {
 			contacts = this.state.contactData.map(p => (
 				<Contact person={p} key={p.name + p.email + p.phone} />
 			))
 		} else {
-			contacts = null;
+			contacts = (
+				<li>Inga kontakter <span role="img" aria-label="sad">😢</span></li>
+			);
 		}
 		// const contacts = this.state.contactData ? this.state.contactData.map(p => ( <Contact person={p} key={p.name + p.email + p.phone} /> )) : null
+
 		return (
 			<div>
-				<h1>Adressbok</h1>
-				<span role="img" aria-label="Radioactive">☎️</span>
+				<h1>Adressbok <span role="img" aria-label="phone">☎️</span> </h1>
+				
+				<button onClick={this.fetchData}>Fetch data</button>
+				<button onClick={this.clearData}>Clear data</button>
+
 				<ul>
 					{contacts}
 				</ul>
-				<button onClick={this.fetchData}>Fetch data</button>
-				<button onClick={this.clearData}>Clear data</button>
 			</div>
 		);
 	}
